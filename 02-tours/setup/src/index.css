@@ -226,3 +226,18 @@ main {
   padding: 0.25rem 0.5rem;
   border-radius: var(--radius);
 }
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  margin-bottom: 2rem;
+  width: 100%;
+  text-align: center;
+}
+
+.footerCenterAlign{
+  margin-top: 5rem;
+  align-items: center;
+  text-align: center;
+}
