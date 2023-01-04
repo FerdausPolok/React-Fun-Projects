@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Header } from "./components/Header";
+import { TodoRows } from "./components/TodoRows";
 
 export default class App extends Component {
   constructor(props) {
@@ -7,41 +9,64 @@ export default class App extends Component {
     this.state = {
       userName: "Polok",
       todoItems: [
-        { action: "Buy Egg", done: false },
+        { action: "Buy Egg", done: true },
         { action: "Buy Rice", done: false },
         { action: "Buy Chicken", done: false },
       ],
+      newTodo: "",
     };
   }
 
+  updateValue = (event) => {
+    this.setState({ newTodo: event.target.value });
+  };
+
+  newTodo = (event) => {
+    this.setState({
+      todoItems: [
+        ...this.state.todoItems,
+        { action: this.state.newTodo, done: false },
+      ],
+    });
+  };
+
   todoRows = () =>
     this.state.todoItems.map((item) => (
-      <tr key={item.action}>
-        <td>{item.action}</td>
-      </tr>
+      <TodoRows key={item.action} item={item} callback={this.toggleDone} />
     ));
 
-  changeStateData = () => {
+  toggleDone = (todo) => {
+    console.log(todo);
     this.setState({
-      userName: this.state.userName === "Name1" ? "Name2" : "Name1",
+      todoItems: this.state.todoItems.map((item) =>
+        item.action === todo.action ? { ...item, done: !item.done } : item
+      ),
     });
   };
 
   render = () => (
     <div className="container">
       <div className="row">
+        <Header name={this.state.userName} />
         <div className="col-12">
-          <h2 className="bg-primary text-white text-center p2">
-            {this.state.userName} Todo List
-          </h2>
+          <input
+            className="form-control"
+            value={this.state.newTodo}
+            onChange={this.updateValue}
+          />
+          <button className="btn btn-primary" onClick={this.newTodo}>
+            Add Task
+          </button>
         </div>
         <div className="col-12">
           <table className="table">
             <thead>
               <tr>
-                <tbody>{this.todoRows()}</tbody>
+                <th>Task</th>
+                <th>Complete</th>
               </tr>
             </thead>
+            <tbody>{this.todoRows()}</tbody>
           </table>
         </div>
       </div>
